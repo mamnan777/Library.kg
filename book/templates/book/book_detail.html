@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} — Library.kg</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+        .book-header { display: flex; gap: 30px; flex-wrap: wrap; }
+        .book-cover { width: 250px; height: 350px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .book-info { flex: 1; min-width: 280px; }
+        h1 { margin-top: 0; color: #2c3e50; }
+        .meta-list { list-style: none; padding: 0; margin: 20px 0; }
+        .meta-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 15px; }
+        .meta-list strong { color: #555; width: 160px; display: inline-block; }
+        .description { margin-top: 25px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'book_list' %}" class="back-link">← Вернуться к списку книг</a>
+        
+        <div class="book-header">
+            {% if book.cover_url %}
+                <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="book-cover">
+            {% else %}
+                <img src="https://placeholder.com" alt="Нет обложки" class="book-cover">
+            {% endif %}
+            
+            <div class="book-info">
+                <h1>{{ book.title }}</h1>
+                <ul class="meta-list">
+                    <li><strong>Автор:</strong> {{ book.author }}</li>
+                    <li><strong>Жанр:</strong> {{ book.genre }}</li>
+                    <li><strong>Год издания:</strong> {{ book.published_year }}</li>
+                    <li><strong>Страниц:</strong> {{ book.pages }}</li>
+                    <li><strong>Язык:</strong> {{ book.language }}</li>
+                    <li><strong>Добавлено:</strong> {{ book.created_at|date:"d.m.Y" }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="description">
+            <h3>Описание книги</h3>
+            <p>{{ book.description|linebreaks }}</p>
+        </div>
+    </div>
+</body>
+</html>

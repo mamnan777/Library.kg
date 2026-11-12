@@ -1,4 +1,7 @@
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from .models import Book
+
 
 def about_me(request):
     html = """
@@ -23,3 +26,12 @@ def sayings_of_great_poets(request):
     <img src="https://wikimedia.org" alt="А.С. Пушкин" width="250">
     """
     return HttpResponse(html)
+
+
+def book_list_view(request):
+    books = Book.objects.all().order_by('-created_at')
+    return render(request, 'book/book_list.html', {'books': books})
+
+def book_detail_view(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    return render(request, 'book/book_detail.html', {'book': book})
