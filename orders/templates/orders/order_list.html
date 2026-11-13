@@ -1,0 +1,25 @@
+<h1>Мои заказы</h1>
+<a href="{% url 'order_create' %}">+ Новый заказ</a>
+<table border="1" cellpadding="8">
+  <tr>
+    <th>№</th><th>Товар</th><th>Цена</th><th>Кол-во</th>
+    <th>Сумма</th><th>Статус</th><th>Покупатель</th><th>Действия</th>
+  </tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.order_number }}</td>
+    <td>{{ o.product_name }}</td>
+    <td>{{ o.price }}</td>
+    <td>{{ o.quantity }}</td>
+    <td>{{ o.total }}</td>
+    <td>{{ o.get_status_display }}</td>
+    <td>{{ o.customer_name }}</td>
+    <td>
+      <a href="{% url 'order_update' o.pk %}">Изменить</a>
+      <a href="{% url 'order_delete' o.pk %}">Удалить</a>
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="8">Заказов пока нет</td></tr>
+  {% endfor %}
+</table>
