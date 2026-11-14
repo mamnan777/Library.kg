@@ -21,6 +21,11 @@
         .badge { display: inline-block; background: #e1f5fe; color: #0288d1; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-bottom: 15px; }
         .btn { display: block; text-align: center; background: #3498db; color: white; text-decoration: none; padding: 10px; border-radius: 5px; font-weight: bold; }
         .btn:hover { background: #2980b9; }
+        .search { margin-bottom: 20px; }
+        .search input { padding: 10px; width: 280px; border: 1px solid #ccc; border-radius: 5px; }
+        .search button { padding: 10px 16px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .pagination { text-align: center; margin-top: 30px; }
+        .pagination a { color: #3498db; text-decoration: none; margin: 0 8px; }
     </style>
 </head>
 <body>
@@ -34,9 +39,12 @@
                 <a href="{% url 'sayings_of_great_poets' %}">Цитаты</a>
             </nav>
         </header>
-
+<form method="get" class="search">
+    <input type="text" name="q" value="{{ query }}" placeholder="Поиск по названию или автору">
+    <button type="submit">Найти</button>
+</form>
         <div class="grid">
-            {% for book in books %}
+            {% for book in page_obj %}
             <div class="card">
                 {% if book.cover_url %}
                     <img src="{{ book.cover_url }}" alt="{{ book.title }}">
@@ -56,6 +64,21 @@
             <p>Пока в библиотеке нет книг. Добавьте их через <a href="/admin/">панель администратора</a>.</p>
             {% endfor %}
         </div>
+        <div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1&q={{ query }}">« Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">Назад</a>
+    {% endif %}
+
+    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">Вперёд</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">Последняя »</a>
+    {% endif %}
+</div>
     </div>
 </body>
 </html>
+
+
