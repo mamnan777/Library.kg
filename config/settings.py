@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'book',
     'tours',
     'orders',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login'

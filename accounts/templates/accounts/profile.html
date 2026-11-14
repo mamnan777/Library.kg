@@ -1,0 +1,14 @@
+<h1>Личный кабинет</h1>
+<p><b>Логин:</b> {{ user.username }}</p>
+<p><b>Имя:</b> {{ user.first_name }}</p>
+<p><b>Фамилия:</b> {{ user.last_name }}</p>
+<p><b>Email:</b> {{ user.email }}</p>
+<p><b>Телефон:</b> {{ profile.phone }}</p>
+<p><b>Дата рождения:</b> {{ profile.birth_date }}</p>
+<p><b>Город:</b> {{ profile.city }}</p>
+<p><b>Дата регистрации:</b> {{ user.date_joined }}</p>
+
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Выйти</button>
+</form>
