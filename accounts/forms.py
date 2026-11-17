@@ -9,6 +9,11 @@ class RegisterForm(UserCreationForm):
     last_name = forms.CharField(label='Фамилия', max_length=50)
     email = forms.EmailField(label='Email')
     phone = forms.CharField(label='Телефон', max_length=20)
+    country = forms.CharField(label='Страна', max_length=50)
+    address = forms.CharField(label='Адрес', max_length=255)
+    gender = forms.ChoiceField(label='Пол', choices=Profile.GENDER_CHOICES)
+    occupation = forms.CharField(label='Профессия', max_length=100)
+    bio = forms.CharField(label='О себе', widget=forms.Textarea, required=False)
     birth_date = forms.DateField(
         label='Дата рождения',
         widget=forms.DateInput(attrs={'type': 'date'}),
@@ -17,8 +22,6 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        # 9 полей: username, first_name, last_name, email,
-        # phone, birth_date, city, password1, password2
         fields = ['username', 'first_name', 'last_name', 'email']
 
     def save(self, commit=True):
@@ -29,6 +32,11 @@ class RegisterForm(UserCreationForm):
                 phone=self.cleaned_data['phone'],
                 birth_date=self.cleaned_data['birth_date'],
                 city=self.cleaned_data['city'],
+                country=self.cleaned_data['country'],
+                address=self.cleaned_data['address'],
+                gender=self.cleaned_data['gender'],
+                occupation=self.cleaned_data['occupation'],
+                bio=self.cleaned_data['bio'],
             )
         return user
 

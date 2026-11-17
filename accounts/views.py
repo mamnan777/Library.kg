@@ -7,11 +7,14 @@ from .models import Profile
 
 
 def register_view(request):
-    form = RegisterForm(request.POST or None)
-    if form.is_valid():
-        user = form.save()
-        login(request, user)
-        return redirect('profile')
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('profile')
+    else:
+        form = RegisterForm()
     return render(request, 'accounts/register.html', {'form': form})
 
 
@@ -33,8 +36,9 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
-    profile, _ = Profile.objects.get_or_create(
-        user=request.user,
-        defaults={'phone': '', 'birth_date': '2000-01-01', 'city': ''},
-    )
-    return render(request, 'accounts/profile.html', {'profile': profile})
+    if request.method == 'GET':
+        profile, _ = Profile.objects.get_or_create(
+            user=request.user,
+            defaults={'phone': '', 'birth_date': '2000-01-01', 'city': ''},
+        )
+        return render(request, 'accounts/profile.html', {'profile': profile})

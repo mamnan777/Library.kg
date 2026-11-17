@@ -31,18 +31,19 @@ def sayings_of_great_poets(request):
 
 
 def book_list_view(request):
-    query = request.GET.get('q', '')
-    books = Book.objects.all().order_by('-created_at')
-    if query:
-        books = books.filter(Q(titleicontains=query) | Q(authoricontains=query))
-
-    paginator = Paginator(books, 5)  # 5 книг на страницу
-    page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'book/book_list.html', {'page_obj': page_obj, 'query': query})
+    if request.method == 'GET':
+        query = request.GET.get('q', '')
+        books = Book.objects.all().order_by('-created_at')
+        if query:
+            books = books.filter(Q(titleicontains=query) | Q(authoricontains=query))
+        paginator = Paginator(books, 5)
+        page_obj = paginator.get_page(request.GET.get('page'))
+        return render(request, 'book/book_list.html', {'page_obj': page_obj, 'query': query})
 
 
 def book_detail_view(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    Book.objects.filter(pk=pk).update(views_count=F('views_count') + 1)
-    book.refresh_from_db()
-    return render(request, 'book/book_detail.html', {'book': book})
+    if request.method == 'GET':
+        book = get_object_or_404(Book, pk=pk)
+        Book.objects.filter(pk=pk).update(views_count=F('views_count') + 1)
+        book.refresh_from_db()
+        return render(request, 'book/book_detail.html', {'book': book})

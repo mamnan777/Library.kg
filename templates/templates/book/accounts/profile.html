@@ -7,6 +7,11 @@
 <p><b>Дата рождения:</b> {{ profile.birth_date }}</p>
 <p><b>Город:</b> {{ profile.city }}</p>
 <p><b>Дата регистрации:</b> {{ user.date_joined }}</p>
+<p><b>Страна:</b> {{ profile.country }}</p>
+<p><b>Адрес:</b> {{ profile.address }}</p>
+<p><b>Пол:</b> {{ profile.get_gender_display }}</p>
+<p><b>Профессия:</b> {{ profile.occupation }}</p>
+<p><b>О себе:</b> {{ profile.bio }}</p>
 
 <form method="post" action="{% url 'logout' %}">
   {% csrf_token %}

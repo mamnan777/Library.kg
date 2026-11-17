@@ -9,19 +9,25 @@ def order_list(request):
 
 
 def order_create(request):
-    form = OrderForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('order_list')
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('order_list')
+    else:
+        form = OrderForm()
     return render(request, 'orders/order_form.html', {'form': form, 'title': 'Новый заказ'})
 
 
 def order_update(request, pk):
     order = get_object_or_404(Order, pk=pk)
-    form = OrderForm(request.POST or None, instance=order)
-    if form.is_valid():
-        form.save()
-        return redirect('order_list')
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('order_list')
+    else:
+        form = OrderForm(instance=order)
     return render(request, 'orders/order_form.html', {'form': form, 'title': 'Изменить заказ'})
 
 
